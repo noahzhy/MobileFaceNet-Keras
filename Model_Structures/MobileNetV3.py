@@ -14,7 +14,7 @@ ALPHA = 1.0
 NUM_LABELS = 1000 
 
 '''Building block funcitons''' 
-def activation(inputs, act_choice): 
+def activation(inputs, act_choice='RE'): 
     
     def relu6(inputs): 
         return K.relu(inputs, max_value = 6.0) 
@@ -42,9 +42,7 @@ def conv_block(inputs, filters, kernel_size, strides, act_choice):
 
 # Squeeze-And-Excite 
 def squeeze_block(inputs): 
-    
     input_channels = int(inputs.shape[-1]) 
-    
     M = GlobalAveragePooling2D()(inputs) 
     M = Dense(input_channels, activation = 'relu')(M) 
     M = Dense(input_channels, activation = 'hard_sigmoid')(M) 
@@ -54,17 +52,12 @@ def squeeze_block(inputs):
     return M 
 
 def bottleneck(inputs, filters, kernel_size, e, s, squeeze, act_choice): 
-    
     channel_axis = 1 if K.image_data_format() == 'channels_first' else -1 
     input_shape = K.int_shape(inputs) 
-    
     tchannel = int(e) 
     cchannel = int(ALPHA * filters) 
-    
     r = s == 1 and input_shape[3] == filters # ??? 
-    
     A1 = conv_block(inputs, tchannel, 1, 1, act_choice) 
-    
     Z2 = DepthwiseConv2D(kernel_size, strides = s, depth_multiplier = 1, padding = 'same')(A1) 
     Z2 = BatchNormalization(axis = channel_axis)(Z2) 
     A2 = activation(Z2, act_choice) 
@@ -82,41 +75,24 @@ def bottleneck(inputs, filters, kernel_size, e, s, squeeze, act_choice):
 
 '''Building the model''' 
 def MobileNetV3_small(include_top = True): 
-    
     X = Input(shape = (224, 224, 3)) 
-    
     M = conv_block(X, 64, 3, 2, 'HS') 
-    
     M = bottleneck(M, 16, 3, e = 16, s = 2, squeeze = True, act_choice = 'RE') 
-    
     M = bottleneck(M, 24, 3, e = 72, s = 2, squeeze = False, act_choice = 'RE') 
-    
     M = bottleneck(M, 24, 3, e = 88, s = 1, squeeze = False, act_choice = 'RE') 
-    
     M = bottleneck(M, 40, 5, e = 96, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 40, 5, e = 240, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 40, 5, e = 240, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 48, 5, e = 120, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 48, 5, e = 144, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 96, 5, e = 288, s = 2, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 96, 5, e = 576, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = bottleneck(M, 96, 5, e = 576, s = 1, squeeze = True, act_choice = 'HS') 
-    
     M = conv_block(M, 576, 1, 1, 'HS') 
-    
     M = GlobalAveragePooling2D()(M) 
-    
     M = Reshape((1, 1, 576))(M) 
-    
     M = Conv2D(1280, 1, strides = 1, padding = 'same')(M)
-    M = activation(M, 'HS') 
+    M = activation(M, 'HS')
     
     if include_top: 
         M = Conv2D(NUM_LABELS, 1, strides = 1, padding = 'same', activation = 'softmax')(M) 

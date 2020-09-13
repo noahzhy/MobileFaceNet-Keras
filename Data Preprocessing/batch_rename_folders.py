@@ -29,6 +29,6 @@ def batch_rename_folders(folder_path):
     
     return i
 
-folder_path = '/data/daiwei/dataset'
+folder_path = 'dataset'
 i = batch_rename_folders(folder_path)
 print(str(i))

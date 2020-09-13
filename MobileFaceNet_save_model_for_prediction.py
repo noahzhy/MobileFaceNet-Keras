@@ -39,10 +39,11 @@ for i in range(len(pred_model.layers)):
 '''Verifying the results''' 
 import numpy as np
 
-x = np.random.rand(1, 112, 112, 3)
+x = np.random.rand(1, 96, 96, 1)
 dense1_layer_model = Model(inputs=model.input, outputs=model.get_layer('dense').output)
 y1 = dense1_layer_model.predict(x)[0]
 y2 = pred_model.predict(x)[0]
+# output is 1x128
 for i in range(128):
     assert y1[i] == y2[i]
 
