@@ -10,7 +10,7 @@ Created on Mon Dec  9 19:55:57 2019
 
 import sys
 # print(sys.path)
-sys.path.append('E:\my_github\MobileFaceNet-Keras\Tools')
+sys.path.append('Tools/')
 from Keras_custom_layers import ArcFaceLossLayer
 from tensorflow.python.keras import backend as K
 from tensorflow.python.keras.layers import (
