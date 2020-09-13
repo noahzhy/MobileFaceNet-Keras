@@ -19,7 +19,7 @@ from tensorflow.python.keras.utils.multi_gpu_utils import multi_gpu_model
 sys.path.append('../')
 from Model_Structures.MobileFaceNet import mobile_face_net_train
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '3' # 如需多张卡设置为：'1, 2, 3'，使用CPU设置为：''
+os.environ['CUDA_VISIBLE_DEVICES'] = '0' # 如需多张卡设置为：'1, 2, 3'，使用CPU设置为：''
 '''Set if the GPU memory needs to be restricted
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.85

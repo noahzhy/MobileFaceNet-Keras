@@ -11,12 +11,12 @@ from tensorflow.python.keras.models import Model
 
 from Model_Structures.MobileFaceNet import mobile_face_net_train, mobile_face_net
 
-NUM_LABELS = 67960
+NUM_LABELS = 5749
 LOSS_TYPE = 'softmax'
 
 '''Loading the training model'''
-model = mobile_face_net_train(NUM_LABELS, loss = LOSS_TYPE)
-model.load_weights('./Models/MobileFaceNet_train.h5')
+model = mobile_face_net_train(NUM_LABELS, loss=LOSS_TYPE)
+model.load_weights('models/MobileFaceNet_train.h5')
 model.summary()
 
 pred_model = mobile_face_net()
@@ -25,7 +25,6 @@ pred_model.summary()
 '''Extracting the weights & transfering to the prediction model'''
 temp_weights_list = []
 for layer in model.layers:
-    
     if 'dropout' in layer.name:
         continue
     temp_layer = model.get_layer(layer.name)
@@ -33,7 +32,6 @@ for layer in model.layers:
     temp_weights_list.append(temp_weights)
 
 for i in range(len(pred_model.layers)):
-    
     pred_model.get_layer(pred_model.layers[i].name).set_weights(temp_weights_list[i])
     
 '''Verifying the results''' 
@@ -48,4 +46,4 @@ for i in range(128):
     assert y1[i] == y2[i]
 
 '''Saving the model'''
-pred_model.save(r'./Models/MobileFaceNet_tfkeras.h5')
+pred_model.save(r'models/MobileFaceNet_tfkeras.h5')

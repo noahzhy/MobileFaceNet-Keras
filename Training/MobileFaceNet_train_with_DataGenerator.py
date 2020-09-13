@@ -17,18 +17,18 @@ from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 sys.path.append(r'Model_Structures')
 from MobileFaceNet import mobile_face_net_train
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 BATCH_SIZE = 128
 # total labels
-NUM_LABELS = 5750
+NUM_LABELS = 5749
 # total images
-m = 476389
+m = 475546
 DATA_SPLIT = 0.005
 TOTAL_EPOCHS = 1000
 
 '''Importing the data set'''
-train_path = r'dataset/lfw-deepfunneled_with_mask'
+train_path = r'/content/lfw-deepfunneled_with_mask'
 
 train_datagen = ImageDataGenerator(rescale = 1. / 255, validation_split = DATA_SPLIT)
 
