@@ -14,8 +14,8 @@ from tensorflow.python.keras.optimizer_v2.adam import Adam
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 # from tensorflow.python.keras.utils.np_utils import to_categorical
 
-sys.path.append('../')
-from Model_Structures.MobileFaceNet import mobile_face_net_train
+sys.path.append(r'E:\my_github\MobileFaceNet-Keras\Model_Structures')
+from MobileFaceNet import mobile_face_net_train
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '3'
 
@@ -28,7 +28,7 @@ DATA_SPLIT = 0.005
 TOTAL_EPOCHS = 1000
 
 '''Importing the data set'''
-train_path = r'dataset'
+train_path = r'F:\lfw-deepfunneled_with_mask'
 
 train_datagen = ImageDataGenerator(rescale = 1. / 255, validation_split = DATA_SPLIT)
 

@@ -90,7 +90,7 @@ def mobile_face_net_train(num_labels, loss='arcface'):
     M = inverted_residual_block(M, 128, 3, t=4, strides=2, n=1)  # (7, 7, 128)
     M = inverted_residual_block(M, 128, 3, t=2, strides=1, n=2)  # (7, 7, 128)
     M = conv_block(M, 512, 1, 1, 'valid')  # (7, 7, 512)
-    M = linear_GD_conv_block(M, 7, 1)  # (1, 1, 512)
+    M = linear_GD_conv_block(M, 3, 1)  # (1, 1, 512)
     # kernel_size = 7 for 112 x 112; 4 for 64 x 64
     M = conv_block(M, 128, 1, 1, 'valid')
     M = Dropout(rate=0.2)(M)
