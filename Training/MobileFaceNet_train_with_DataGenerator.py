@@ -23,7 +23,7 @@ BATCH_SIZE = 128
 # total labels
 NUM_LABELS = 5749
 # total images
-m = 475546
+m = 52932
 DATA_SPLIT = 0.005
 TOTAL_EPOCHS = 1000
 
@@ -41,7 +41,7 @@ def mobilefacenet_input_generator(generator, directory, subset, loss = 'arcface'
         class_mode = 'categorical',
         subset = subset
     )
-    
+
     while True: 
         X = gen.next() 
         if loss == 'arcface':
