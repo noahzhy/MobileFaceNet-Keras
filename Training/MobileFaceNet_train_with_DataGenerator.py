@@ -23,12 +23,12 @@ BATCH_SIZE = 128
 # total labels
 NUM_LABELS = 5749
 # total images
-m = 52932
-DATA_SPLIT = 0.005
+m = 52669
+DATA_SPLIT = 0.02
 TOTAL_EPOCHS = 1000
 
 '''Importing the data set'''
-train_path = r'/content/lfw-deepfunneled_with_mask'
+train_path = r'/content/lfw-deepfunneled_with_mask_each4'
 
 train_datagen = ImageDataGenerator(rescale = 1. / 255, validation_split = DATA_SPLIT)
 
