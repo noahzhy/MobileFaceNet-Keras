@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon May 13 16:54:33 2019
-
-@author: TMaysGGS
-"""
-
-'''Last updated on 2020.03.30 11:15''' 
-'''Importing the libraries & setting the configurations'''
 import os
 import sys
 sys.path.append(r'Model_Structures')
-from Model_Structures.MobileFaceNet import mobile_face_net_train
+from MobileFaceNet import mobile_face_net_train
 from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping, Callback, CSVLogger, ReduceLROnPlateau
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 from tensorflow.python.keras.utils.multi_gpu_utils import multi_gpu_model
 # import keras.backend.tensorflow_backend as KTF
 # from tensorflow.python.keras.utils.vis_utils import plot_model
-
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0' # 如需多张卡设置为：'1, 2, 3'，使用CPU设置为：''
 '''Set if the GPU memory needs to be restricted
@@ -27,19 +18,18 @@ session = tf.Session(config = config)
 
 KTF.set_session(session)
 '''
-BATCH_SIZE = 128
-old_m = 475546
-m = 475546
-DATA_SPLIT = 0.005
-OLD_NUM_LABELS = 5749
-NUM_LABELS = 5749
+BATCH_SIZE = 1024
+old_m = 466710
+m = 466710
+DATA_SPLIT = 0.01
+OLD_NUM_LABELS = 10805
+NUM_LABELS = 10805
 TOTAL_EPOCHS = 1000
-OLD_LOSS_TYPE = 'arcface'
+OLD_LOSS_TYPE = 'softmax'
 LOSS_TYPE = 'arcface'
 
 '''Importing the data set'''
-train_path = '/content/lfw-deepfunneled_with_mask'
-
+train_path = r'../dataset/Mega_EX'
 train_datagen = ImageDataGenerator(rescale = 1. / 255, validation_split = DATA_SPLIT)
 
 def mobilefacenet_input_generator(generator, directory, subset, loss = 'arcface'):
@@ -66,7 +56,7 @@ validate_generator = mobilefacenet_input_generator(train_datagen, train_path, 'v
 '''Loading the model & re-defining''' 
 model = mobile_face_net_train(OLD_NUM_LABELS, loss = OLD_LOSS_TYPE)
 print("Reading the pre-trained model... ")
-model.load_weights(r'models/MobileFaceNet_train.h5')
+model.load_weights(r'models/mfn_9644.h5')
 print("Reading done. ")
 model.summary()
 # plot_model(model, to_file = r'../Models/training_model.png', show_shapes = True, show_layer_names = True) 

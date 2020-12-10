@@ -19,16 +19,16 @@ from MobileFaceNet import mobile_face_net_train
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
-BATCH_SIZE = 128
+BATCH_SIZE = 1024
 # total labels
-NUM_LABELS = 5749
+NUM_LABELS = 10805
 # total images
-m = 52669
-DATA_SPLIT = 0.02
+m = 466710
+DATA_SPLIT = 0.01
 TOTAL_EPOCHS = 1000
 
 '''Importing the data set'''
-train_path = r'/content/lfw-deepfunneled_with_mask_each4'
+train_path = r'../dataset/Mega_EX'
 
 train_datagen = ImageDataGenerator(rescale = 1. / 255, validation_split = DATA_SPLIT)
 
@@ -64,7 +64,7 @@ model.layers
 model.compile(optimizer = Adam(lr = 0.001, epsilon = 1e-8), loss = 'categorical_crossentropy', metrics = ['accuracy'])
 
 # Save the model after every epoch
-check_pointer = ModelCheckpoint(filepath = 'models/MobileFaceNet_train.h5', verbose = 1, save_best_only = True)
+check_pointer = ModelCheckpoint(filepath = 'models/mfn.h5', verbose = 1, save_best_only = True)
 
 # Interrupt the training when the validation loss is not decreasing
 early_stopping = EarlyStopping(monitor = 'val_loss', patience = 10000)
@@ -90,6 +90,11 @@ reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.2, patience = 200
 '''Importing the data & training the model'''
 # Model.fit_generator is deprecated and will be removed in a future version, 
 # Please use Model.fit, which supports generators.
+# class MonitoringCallback(Callback):
+#     def on_epoch_end(self, logs={}):
+#         for metric_name, metric_value in logs.items():
+#             neptune.log_metric(metric_name, metric_value)
+
 hist = model.fit(
     train_generator, 
     steps_per_epoch = int(m * (1 - DATA_SPLIT) / BATCH_SIZE), 
@@ -98,7 +103,7 @@ hist = model.fit(
     validation_data = validate_generator, 
     validation_steps = int(m * DATA_SPLIT / BATCH_SIZE), 
     workers = 1,  
-    use_multiprocessing = False
+    use_multiprocessing = False,
 ) # For TensorFlow 2, Multi-Processing here is not able to use. Use tf.data API instead. 
 
 print(hist.history)

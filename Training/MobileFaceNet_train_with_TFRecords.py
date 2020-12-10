@@ -17,7 +17,7 @@ from tensorflow.python.keras.optimizer_v2.adam import Adam
 sys.path.append('../')
 from Model_Structures.MobileFaceNet import mobile_face_net_train
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '3'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 BATCH_SIZE = 128
 NUM_LABELS = 153 # 40
