@@ -125,7 +125,7 @@ class ParallelModelCheckpoint(ModelCheckpoint):
 if num_gpus == 1:
     check_pointer = ModelCheckpoint(filepath = 'models/MobileFaceNet_train.h5', verbose = 1, save_best_only = True)
 elif num_gpus > 1:
-    check_pointer = ParallelModelCheckpoint(customed_model, filepath = 'models/MobileFaceNet_train.h5', monitor = 'val_loss', verbose = 1, save_best_only = True)
+    check_pointer = ParallelModelCheckpoint(customed_model, filepath = 'models/mfn_train.h5', monitor = 'val_loss', verbose = 1, save_best_only = True)
 
 # Interrupt the training when the validation loss is not decreasing
 early_stopping = EarlyStopping(monitor = 'val_loss', patience = 1000)
